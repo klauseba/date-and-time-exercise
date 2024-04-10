@@ -1,71 +1,59 @@
 
-var myDate = new Date('2018-01-22T13:05:18');  // Date Mon Jan 22 2018 13:00:00 GMT+0100 (Central European Standard Time)
-var currentDateAndTime = Date(); // todays current date and time> Fri Mar 29 2024 20:57:42 GMT+0100 (Central European Standard Time)
-
-  var month = myDate.getMonth(); // 0  (mont is also 0 based, so January is 0, February is 2...etc)
-
-    var monthsList = ["January","February","March","April","May","June","July","August","September","October","November","December"]
-    // console.log(monthsList[month]); // January
-
-  // var date = myDate.getDate(); // 22
-  var day = myDate.getDay(); // 1  (Sunday is 0, monday is 1, tuesday is 2...etc)
-
-  var minutes = myDate.getMinutes(); // 5  
-  var seconds = myDate.getSeconds(); // 18
-  var milliseconds = myDate.getMilliseconds(); // 0
-
-  // console.log(currentDateAndTime);
+var currentDateSeconds = Math.round((new Date().getTime() / 1000)); // shows current miliseconds
 
 
-  function formatDistanceToNow(myDate){
-    if(seconds >= 0 && seconds < 31) {
-      console.log('less than a minute')
-    } else if (seconds >= 30 && minutes < 1.5) {
-      console.log('1 minute')
-    } else if (minutes >= 1.5 && minutes < 44.5) {
-      console.log('XX minutes')
-    } else if (seconds >= 2670 && seconds < 5370) {
-      console.log('about 1 hour')
-    } else {
-      console.log('idk')
-    }
-  }
+// Task: If the date is 0 to 30 seconds before now, the function should return the string 'less than a minute'.
+// formatDistanceToNow(new Date(new Date() - 10)); // 'less than a minute'
+const lowSeconds = currentDateSeconds - 30;
+const highSeconds = currentDateSeconds;
 
-  var a = new Date(); // Current date now.
-  var b = new Date(2024, 0, 1, 0, 0, 0, 0); // Start of 2024.
-  var d = (a-b); // Difference in milliseconds.  7680235239
+// If the date is '30 sec to 1 min 30 sec before now, the function should return the string'1 minute'`.
+// formatDistanceToNow(new Date(new Date() - 60 * 1000)); // '1 minute'
+const lowMinutes = currentDateSeconds - 90;
+const highMinutes = currentDateSeconds - 30;
 
-  console.log(d)
+// If the date is 1 min 30 secs to '44 mins (2640 +30) 30 secs before now, the function should return the string [2..44] minutes`.
+// formatDistanceToNow(new Date(new Date() - 31 * 60 * 1000)); // '31 minutes'
+const lowMinutes2 = currentDateSeconds - 2670;
+const highMinutes2 = currentDateSeconds - 90;
 
-  /*
+// If the date is '44 mins 30 secs to '89 mins (5340 + 30) 30 secs before now, the function should return the string about 1 hour.
+// formatDistanceToNow(new Date(new Date() - 77 * 60 * 1000)); // 'about 1 hour'
+const lowHours = currentDateSeconds - 5370;
+const highHours = currentDateSeconds - 2670;
+
+// If the date object is undefined or null, it should return the string Date is unknown. 
+//done
+
+// Otherwise, it should return the full date in the format DD.MM.YYYY HH:mm:ss. That is: day.month.year hours:minutes:seconds, all in two-digit format, e.g., 01.06.2016 09:07:24. Please note you should add 0 to a one-digit number in months, dates, hours, minutes, and seconds.
+// idk how
+
+
+function formatDistanceToNow(y){
   
-    If the date is 0 to 30 seconds before now, the function should return the string 'less than a minute'.
-    If the date is '30 secsto1 min 30 secsbefore now, the function should return the string'1 minute'`.
-    If the date is 1 min 30 secs to '44 mins 30 secsbefore now, the function should return the string [2..44] minutes`.
-    If the date is '44 mins 30 secs to '89 mins 30 secs before now, the function should return the string about 1 hour.
-    Otherwise, it should return the full date in the format DD.MM.YYYY HH:mm:ss. That is: day.month.year hours:minutes:seconds, all in two-digit format, e.g., 01.06.2016 09:07:24. Please note you should add 0 to a one-digit number in months, dates, hours, minutes, and seconds.
-    If the date object is undefined or null, it should return the string Date is unknown.
+    if (y === null || y === undefined){
+      console.log('Date is unknown');
+      return;
+    }
 
-  const time = new Date(); // Date Fri Mar 29 2024 19:59:52 GMT+0100 (Central European Standard Time)
-  const time2 = time.now(); // 1711738874174
- 
+    let x = y.getTime() / 1000;
 
-An example of using the function:
+    if (x > lowSeconds && x < highSeconds) {
+      console.log('less than a minute');
+    } else if (x > lowMinutes && x < highMinutes) {
+      console.log('1 minute');
+    } else if (x > lowMinutes2 && x < highMinutes2) {
+      console.log(`${Math.floor((currentDateSeconds - x) / 60)} minutes or [2..44] minutes or [${Math.floor((currentDateSeconds - x) / 60)}] minutes... sorry it wasn't clear `);
+    } else if (x > lowHours && x < highHours) {
+      console.log('about 1 hour'); 
+    }  else console.log(y.toLocaleString());  
+}
 
-formatDistanceToNow(new Date(new Date() - 10)); // 'less than a minute'
-formatDistanceToNow(new Date(new Date() - 60 * 1000)); // '1 minute'
-formatDistanceToNow(new Date(new Date() - 31 * 60 * 1000)); // '31 minutes'
-formatDistanceToNow(new Date(new Date() - 77 * 60 * 1000)); // 'about 1 hour'
 
-formatDistanceToNow(new Date(2012, 6, 28, 9, 7, 32)); // '28.07.2016 09:07:32'
+formatDistanceToNow(new Date(new Date() - 10));
+formatDistanceToNow(new Date(new Date() - 60 * 1000));
+formatDistanceToNow(new Date(new Date() - 31 * 60 * 1000));
+formatDistanceToNow(new Date(new Date() - 77 * 60 * 1000)); 
+formatDistanceToNow(new Date(2012, 6, 28, 9, 7, 32)); // 7/28/2012, 9:07:32 AM
 formatDistanceToNow(null); // 'Date is unknown'
 formatDistanceToNow(); // 'Date is unknown'
-
-
-
-var a = new Date(); // Current date now.
-var b = new Date(2010, 0, 1, 0, 0, 0, 0); // Start of 2010.
-var d = (b-a); // Difference in milliseconds.
-
-
-*/
